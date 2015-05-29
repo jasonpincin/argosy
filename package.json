@@ -1,0 +1,36 @@
+{
+  "name": "argosy",
+  "version": "0.0.0",
+  "description": "A modular, pipable, micro-service framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "make npm-test",
+    "coverage": "make npm-coverage"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jasonpincin/argosy.git"
+  },
+  "keywords": [
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasonpincin/argosy/issues"
+  },
+  "homepage": "https://github.com/jasonpincin/argosy",
+  "author": {
+    "name": "Jason Pincin",
+    "email": "jason@pincin.com",
+    "url": "http://jason.pincin.com/"
+  },
+  "contributors": [
+  ],
+  "devDependencies": {
+    "istanbul": "^0.3.14",
+    "jshint": "^2.7.0",
+    "opn": "^1.0.2",
+    "tap-dot": "^1.0.0",
+    "tap-spec": "^3.0.0",
+    "tape": "^4.0.0"
+  }
+}

@@ -1,0 +1,4 @@
+*.log
+nohup.out
+coverage
+node_modules
