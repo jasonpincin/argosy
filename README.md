@@ -136,6 +136,8 @@ co(function* () {
 })
 ```
 
+_Note: If you're runtime doesn't offer generators or promises, you can still run the above example from the example directory via [babel](https://babeljs.io). Just do: `npm i -g babel && babel-node example/es6.js`_
+
 ## api
 
 ```javascript
@@ -146,15 +148,11 @@ var argosy = require('argosy')
 
 See also [argosy-service](https://github.com/jasonpincin/argosy-service).
 
-Create a new service object. The `service` object is a stream intended to be connected (piped) to Argosy clients 
-through any number of intermediary streams. 
+Create a new service object. The `service` object is a stream intended to be connected (piped) to Argosy clients through any number of intermediary streams. 
 
 #### queue = service.message(pattern)
 
-Create a [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) that will be pushed messages that 
-match the `pattern` object provided (see [argosy-pattern](https://github.com/jasonpincin/argosy-pattern) for details on 
-defining patterns). These messages should be processed and responded to using the `process` function of the `queue`. 
-Responses will be sent to the connected/requesting client.
+Create a [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) that will be pushed messages that match the `pattern` object provided (see [argosy-pattern](https://github.com/jasonpincin/argosy-pattern) for details on defining patterns). These messages should be processed and responded to using the `process` function of the `queue`.  Responses will be sent to the connected/requesting client.
 
 It is advised not to match the key `argosy` as this is reserved for internal use. 
 
@@ -162,30 +160,21 @@ It is advised not to match the key `argosy` as this is reserved for internal use
 
 See also [argosy-client](https://github.com/jasonpincin/argosy-client).
 
-Create a new client object. The `client` object is a stream intended to be connected (piped) to Argosy services
-through any number of intermediary streams.
+Create a new client object. The `client` object is a stream intended to be connected (piped) to Argosy services through any number of intermediary streams.
 
 #### client.invoke(msg [, cb])
 
-Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon 
-completion, the callback `cb`, if supplied, will be called with the result or error. The `client.invoke` function also 
-returns a promise which will resolve or reject appropriately. 
+Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `client.invoke` function also returns a promise which will resolve or reject appropriately. 
 
 #### client.invoke.partial(partialMsg)
 
-Return a function that represents a partial invocation. The function returned has the same signature as `client.invoke`, but 
-when called, the `msg` parameter will be merged with the `partialMsg` parameter provided at the time the function was created. 
-Otherwise, the generated function behaves identically to `client.invoke`.
+Return a function that represents a partial invocation. The function returned has the same signature as `client.invoke`, but when called, the `msg` parameter will be merged with the `partialMsg` parameter provided at the time the function was created.  Otherwise, the generated function behaves identically to `client.invoke`.
 
 ### pattern = argosy.pattern(object)
 
 See also [argosy-pattern](https://github.com/jasonpincin/argosy-pattern).
 
-Create an Argosy pattern, given an object containing rules. Each key in the object represents a key 
-that is to be validated in compared message objects. These keys will be tested to have the same literal 
-value, matching regular expression, or to be of a given type using the matching system described below. 
-Nested keys may be matched using the dot notation. For example, `{'message.count':1}` equates to 
-`{message: {count: 1}}`.
+Create an Argosy pattern, given an object containing rules. Each key in the object represents a key that is to be validated in compared message objects. These keys will be tested to have the same literal value, matching regular expression, or to be of a given type using the matching system described below.  Nested keys may be matched using the dot notation. For example, `{'message.count':1}` equates to `{message: {count: 1}}`.
 
 #### pattern.matches(object)
 
@@ -193,8 +182,7 @@ Returns true of the given object matches the pattern, or false otherwise.
 
 #### argosy.pattern.match
 
-Argosy patterns support more than literal values. The values of the pattern keys may be any of the following in 
-addition to literal values:
+Argosy patterns support more than literal values. The values of the pattern keys may be any of the following in addition to literal values:
 
 * A regular expression - values will be tested against the regular expression to determine a match
 * `argosy.pattern.match.number` - matches any number
