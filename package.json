@@ -11,8 +11,7 @@
     "type": "git",
     "url": "git://github.com/jasonpincin/argosy.git"
   },
-  "keywords": [
-  ],
+  "keywords": [],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jasonpincin/argosy/issues"
@@ -23,14 +22,20 @@
     "email": "jason@pincin.com",
     "url": "http://jason.pincin.com/"
   },
-  "contributors": [
-  ],
+  "contributors": [],
   "devDependencies": {
-    "istanbul": "^0.3.14",
-    "jshint": "^2.7.0",
-    "opn": "^1.0.2",
-    "tap-dot": "^1.0.0",
-    "tap-spec": "^3.0.0",
-    "tape": "^4.0.0"
+    "co": "~4.5.4",
+    "istanbul": "~0.3.14",
+    "jshint": "~2.8.0",
+    "opn": "~1.0.1",
+    "request-promise": "~0.4.2",
+    "tap-dot": "~1.0.0",
+    "tap-spec": "~4.0.0",
+    "tape": "~4.0.0"
+  },
+  "dependencies": {
+    "argosy-client": "~1.0.2",
+    "argosy-pattern": "~1.0.1",
+    "argosy-service": "~2.0.0"
   }
 }
