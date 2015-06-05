@@ -30,16 +30,16 @@ A modular, pipable, micro-service framework.
 
 ## motivation
 
-Why a framework? After building micro-services a wide variety of ways, in small organizations and large, I wanted to 
-standardize my approach, and bring together all the lessons learned. Argosy draws inspiration from many sources 
-including a smorgasbord of systems (I've used in other micro-service projects) such as [RabbitMQ](http://www.rabbitmq.com), 
+Why a framework? After building micro-services a wide variety of ways over a number of years, in small organizations and large, I wanted to 
+standardize the approach, and bring together all the lessons learned. Argosy draws inspiration from many sources 
+including a smorgasbord of systems (I've used in other micro-service projects) such as [RabbitMQ](http://www.rabbitmq.com) and  
 [Zookeeper](http://zookeeper.apache.org), as well as other node libraries including but not limited to 
 [dnode](https://github.com/substack/dnode) and [rpc-stream](https://github.com/dominictarr/rpc-stream). Argosy shares some 
 commonalities with [seneca](https://github.com/rjrodger/seneca) as well. 
 
 Like the micro-service model, Argosy is a collection of [small modules](https://github.com/search?q=user%3Ajasonpincin+argosy). 
 Instead of a plugin model, these components are streams, designed to be connected together via pipes. Extending Argosy is a 
-matter of manipulating that stream.
+matter of manipulating the stream.
 
 ## example
 
