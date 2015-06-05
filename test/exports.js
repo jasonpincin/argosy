@@ -2,8 +2,8 @@ var test     = require('tape'),
     exported = require('..')
 
 test('exported', function (t) {
-    t.ok(exported.service, 'service')
-    t.ok(exported.client, 'client')
-    t.ok(exported.pattern, 'pattern')
+    t.equal(require('../service'), exported.service, 'service')
+    t.equal(require('../client'), exported.client, 'client')
+    t.equal(require('../pattern'), exported.pattern, 'pattern')
     t.end()
 })
