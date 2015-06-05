@@ -11,7 +11,17 @@
     "type": "git",
     "url": "git://github.com/jasonpincin/argosy.git"
   },
-  "keywords": [],
+  "keywords": [
+    "micro-service",
+    "microservice",
+    "framework",
+    "micro",
+    "rpc",
+    "stream",
+    "pipe",
+    "server",
+    "client"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/jasonpincin/argosy/issues"
