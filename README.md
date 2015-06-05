@@ -184,6 +184,8 @@ Otherwise, the generated function behaves identically to `client.invoke`.
 
 ### pattern = argosy.pattern(object)
 
+See also [argosy-pattern](https://github.com/jasonpincin/argosy-pattern).
+
 Create an Argosy pattern, given an object containing rules. Each key in the object represents a key 
 that is to be validated in compared message objects. These keys will be tested to have the same literal 
 value, matching regular expression, or to be of a given type using the matching system described below. 
