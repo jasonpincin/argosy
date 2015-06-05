@@ -24,7 +24,7 @@ ifdef npm_config_html
 endif
 
 lint:
-	@$(BIN)/jshint --exclude '**/{coverage,node_modules}/*' **/*.js
+	@$(BIN)/jshint --exclude '**/{coverage,node_modules}/*' --exclude '**/es6.js' **/*.js
 
 test:
 	$(if $(npm_config_grep), @echo "Running test files that match pattern: $(npm_config_grep)\n",)
