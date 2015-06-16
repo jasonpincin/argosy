@@ -2,17 +2,10 @@ var http    = require('http'),
     query   = require('querystring').stringify,
     request = require('request-promise'),
     co      = require('co'),
-    argosy  = require('..')
-
-// create a service
-var service = argosy.service()
-// create a client
-var client = argosy.client()
-// connect the client to the service
-client.pipe(service).pipe(client)
+    argosy  = require('..')()
 
 // create a service queue of requests for weather
-var weatherRequest = service.message({
+var weatherRequest = argosy.accept({
     get: 'weather',
     location: argosy.pattern.match.defined
 })
@@ -24,13 +17,12 @@ weatherRequest.process(co.wrap(function* ({ location: q, units = 'imperial' }) {
     return JSON.parse(weather).main
 }))
 
-// now use the argosy client to interact with out service
 // we can create a convenience function with invoke.partial
-var getWeather = client.invoke.partial({ get: 'weather', units: 'metric' })
+var getWeather = argosy.invoke.partial({ get: 'weather', units: 'metric' })
 
 co(function* () {
-    // use client.invoke directly
-    var boston = yield client.invoke({ get: 'weather', location: 'Boston,MA' })
+    // use invoke directly
+    var boston = yield argosy.invoke({ get: 'weather', location: 'Boston,MA' })
 
     // or use our shiny new convenient function
     var dublin = yield getWeather({ location: 'Dublin,IE' })

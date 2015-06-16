@@ -2,15 +2,15 @@ var http    = require('http'),
     query   = require('querystring'),
     argosy  = require('..')
 
-// create a service
-var service = argosy.service()
+// create an endpoint
+var service = argosy()
 // create a client
-var client = argosy.client()
+var client = argosy()
 // connect the client to the service
 client.pipe(service).pipe(client)
 
 // create a service queue of requests for weather
-var weatherRequest = service.message({
+var weatherRequest = service.accept({
     get: 'weather',
     location: argosy.pattern.match.defined
 })

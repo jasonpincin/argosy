@@ -2,8 +2,8 @@ var test     = require('tape'),
     exported = require('..')
 
 test('exported', function (t) {
-    t.equal(require('../service'), exported.service, 'service')
-    t.equal(require('../client'), exported.client, 'client')
-    t.equal(require('../pattern'), exported.pattern, 'pattern')
+    t.equal(typeof require('..'), 'function', 'exports a function')
+    t.equal(typeof require('..').pattern, 'function', 'exports argosy-pattern as argosy.pattern')
+    t.equal(require('../pattern'),  require('..').pattern, 'exports argosy-pattern as argosy/pattern')
     t.end()
 })

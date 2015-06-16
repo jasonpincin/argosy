@@ -15,14 +15,14 @@ A modular, pipable, micro-service framework.
   - [es5](#es5)
   - [es6+](#es6)
 - [api](#api)
-  - [service = argosy.service()](#service--argosyservice)
-    - [queue = service.message(pattern)](#queue--servicemessagepattern)
-  - [client = argosy.client()](#client--argosyclient)
-    - [client.invoke(msg [, cb])](#clientinvokemsg--cb)
-    - [client.invoke.partial(partialMsg)](#clientinvokepartialpartialmsg)
+  - [queue = argosy.accept(pattern)](#queue--argosyacceptpattern)
+  - [queue.process([opts,] func)](#queueprocessopts-func)
+  - [argosy.invoke(msg [, cb])](#argosyinvokemsg--cb)
+  - [func = argosy.invoke.partial(partialMsg)](#func--argosyinvokepartialpartialmsg)
   - [pattern = argosy.pattern(object)](#pattern--argosypatternobject)
-    - [pattern.matches(object)](#patternmatchesobject)
-    - [argosy.pattern.match](#argosypatternmatch)
+  - [pattern.matches(object)](#patternmatchesobject)
+  - [argosy.pattern.match](#argosypatternmatch)
+  - [connecting endpoints](#connecting-endpoints)
 - [testing](#testing)
 - [coverage](#coverage)
 
@@ -30,11 +30,9 @@ A modular, pipable, micro-service framework.
 
 ## motivation
 
-Why a framework? After building micro-services a wide variety of ways over a number of years, in small organizations and large, I wanted to standardize the approach, and bring together all the lessons learned. Argosy draws inspiration from many sources including a smorgasbord of systems (I've used in other micro-service projects) such as [RabbitMQ](http://www.rabbitmq.com) and  [Zookeeper](http://zookeeper.apache.org), as well as other node libraries including but not limited to [dnode](https://github.com/substack/dnode) and [rpc-stream](https://github.com/dominictarr/rpc-stream). Argosy shares some commonalities with [seneca](https://github.com/rjrodger/seneca) as well. 
+Why a framework? After building micro-services a wide variety of ways over a number of years, in small organizations and large, I wanted to standardize the approach, and bring together all the lessons learned. Argosy draws inspiration from many sources including a smorgasbord of systems (I've used in other micro-service projects) such as [RabbitMQ](http://www.rabbitmq.com) and  [Zookeeper](http://zookeeper.apache.org), as well as other node libraries including but not limited to [dnode](https://github.com/substack/dnode), [rpc-stream](https://github.com/dominictarr/rpc-stream), and [seneca](https://github.com/rjrodger/seneca).
 
-Like the micro-service model, Argosy is a collection of [small modules](https://github.com/search?q=user%3Ajasonpincin+argosy). 
-Instead of a plugin model, these components are streams, designed to be connected together via pipes. Extending Argosy is a 
-matter of manipulating the stream.
+Like the micro-service model, the Argosy ecosystem consists of many small modules. These components are streams, designed to be connected together via pipes. Extending Argosy is a matter of manipulating the stream.
 
 ## example
 
@@ -43,17 +41,10 @@ matter of manipulating the stream.
 ```javascript
 var http    = require('http'),
     query   = require('querystring'),
-    argosy  = require('argosy')
-
-// create a service
-var service = argosy.service()
-// create a client
-var client = argosy.client()
-// connect the client to the service
-client.pipe(service).pipe(client)
+    argosy  = require('argosy')()
 
 // create a service queue of requests for weather
-var weatherRequest = service.message({
+var weatherRequest = argosy.accept({
     get: 'weather',
     location: argosy.pattern.match.defined
 })
@@ -71,13 +62,13 @@ weatherRequest.process(function (msg, cb) {
     })
 })
 
-// use the service with argosy-client
-client.invoke({ get: 'weather', location: 'Boston,MA' }, function (err, weather) {
+// use the service
+argosy.invoke({ get: 'weather', location: 'Boston,MA' }, function (err, weather) {
     console.log(weather.temp + ' degrees (F) in Boston.')
 })
 
 // or create a convenience function using invoke.partial
-var getWeather = client.invoke.partial({ get: 'weather', units: 'metric' })
+var getWeather = argosy.invoke.partial({ get: 'weather', units: 'metric' })
 
 getWeather({ location: 'Dublin,IE' }, function (err, weather) {
     console.log(weather.temp + ' degrees (C) in Dublin.')
@@ -96,35 +87,27 @@ var http    = require('http'),
     query   = require('querystring').stringify,
     request = require('request-promise'),
     co      = require('co'),
-    argosy  = require('argosy')
-
-// create a service
-var service = argosy.service()
-// create a client
-var client = argosy.client()
-// connect the client to the service
-client.pipe(service).pipe(client)
+    argosy  = require('..')()
 
 // create a service queue of requests for weather
-var weatherRequest = service.message({
+var weatherRequest = argosy.accept({
     get: 'weather',
     location: argosy.pattern.match.defined
 })
 
 // process the requests for weather
 var weatherUrl = 'http://api.openweathermap.org/data/2.5/weather?'
-weatherRequest.process(co.wrap(function* ({ location:q, units='imperial' }) {
+weatherRequest.process(co.wrap(function* ({ location: q, units = 'imperial' }) {
     var weather = yield request.get(weatherUrl + query({ q, units }))
     return JSON.parse(weather).main
 }))
 
-// now use the argosy client to interact with out service
 // we can create a convenience function with invoke.partial
-var getWeather = client.invoke.partial({ get: 'weather', units: 'metric' })
+var getWeather = argosy.invoke.partial({ get: 'weather', units: 'metric' })
 
 co(function* () {
-    // use client.invoke directly
-    var boston = yield client.invoke({ get: 'weather', location: 'Boston,MA' })
+    // use invoke directly
+    var boston = yield argosy.invoke({ get: 'weather', location: 'Boston,MA' })
 
     // or use our shiny new convenient function
     var dublin = yield getWeather({ location: 'Dublin,IE' })
@@ -141,34 +124,27 @@ _Note: If you're runtime doesn't offer generators or promises, you can still run
 ## api
 
 ```javascript
-var argosy = require('argosy')
+// Create a new Argosy endpoint/stream
+var argosy = require('argosy')()
 ```
 
-### service = argosy.service()
+### queue = argosy.accept(pattern)
 
-See also [argosy-service](https://github.com/jasonpincin/argosy-service).
-
-Create a new service object. The `service` object is a stream intended to be connected (piped) to Argosy clients through any number of intermediary streams. 
-
-#### queue = service.message(pattern)
-
-Create a [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) that will be pushed messages that match the `pattern` object provided (see [argosy-pattern](https://github.com/jasonpincin/argosy-pattern) for details on defining patterns). These messages should be processed and responded to using the `process` function of the `queue`.  Responses will be sent to the connected/requesting client.
+Create a [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) that will be pushed messages that match the `pattern` object provided (see [argosy-pattern](https://github.com/jasonpincin/argosy-pattern) for details on defining patterns). These messages should be processed and responded to using the `process` function of the `queue`.  Responses will be sent to the requesting Argosy endpoint.
 
 It is advised not to match the key `argosy` as this is reserved for internal use. 
 
-### client = argosy.client()
+### queue.process([opts,] func)
 
-See also [argosy-client](https://github.com/jasonpincin/argosy-client).
+Process messages. See [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) for more information. The processor function `func` has a signature of `msg [, cb]`. The callback `cb` if provided should be executed with any applicable return value or error object (as 1st argument) for the invoking client, once the request has been completed. Alternatively, a promise may be returned from the processor function `func`, and it's resolved value or rejected error will be returned to the invoking client.
 
-Create a new client object. The `client` object is a stream intended to be connected (piped) to Argosy services through any number of intermediary streams.
+### argosy.invoke(msg [, cb])
 
-#### client.invoke(msg [, cb])
+Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one oft he patterns implemtned by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be taken care of locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response. 
 
-Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `client.invoke` function also returns a promise which will resolve or reject appropriately. 
+### func = argosy.invoke.partial(partialMsg)
 
-#### client.invoke.partial(partialMsg)
-
-Return a function that represents a partial invocation. The function returned has the same signature as `client.invoke`, but when called, the `msg` parameter will be merged with the `partialMsg` parameter provided at the time the function was created.  Otherwise, the generated function behaves identically to `client.invoke`.
+Return a function that represents a partial invocation. The function returned has the same signature as `argosy.invoke`, but when called, the `msg` parameter will be merged with the `partialMsg` parameter provided at the time the function was created.  Otherwise, the generated function behaves identically to `argosy.invoke`.
 
 ### pattern = argosy.pattern(object)
 
@@ -176,11 +152,11 @@ See also [argosy-pattern](https://github.com/jasonpincin/argosy-pattern).
 
 Create an Argosy pattern, given an object containing rules. Each key in the object represents a key that is to be validated in compared message objects. These keys will be tested to have the same literal value, matching regular expression, or to be of a given type using the matching system described below.  Nested keys may be matched using the dot notation. For example, `{'message.count':1}` equates to `{message: {count: 1}}`.
 
-#### pattern.matches(object)
+### pattern.matches(object)
 
 Returns true of the given object matches the pattern, or false otherwise. 
 
-#### argosy.pattern.match
+### argosy.pattern.match
 
 Argosy patterns support more than literal values. The values of the pattern keys may be any of the following in addition to literal values:
 
@@ -192,6 +168,38 @@ Argosy patterns support more than literal values. The values of the pattern keys
 * `argosy.pattern.match.object` - matches any truthy object
 * `argosy.pattern.match.defined` - matches anything other than `undefined`
 * `argosy.pattern.match.undefined` - matches `undefined` or missing key
+
+### connecting endpoints
+
+One Argosy endpoint may be connected to another via pipes.
+
+```
+var argosy   = require('argosy'),
+    service1 = argosy(),
+    service2 = argosy()
+
+service1.pipe(service2).pipe(service)
+```
+
+This will create a duplex connection between the two Argosy endpoints, and allow both to invoke implemented servcies via the other. For example:
+
+```javascript
+service1.accept({ get: 'random number' }).process(function (msg, cb) {
+    // do something interesting
+})
+
+service2.accept({ get: 'random letter' }).process(function (msg, cb) {
+    // do something interesting
+})
+
+service1.invoke({ get: 'random letter' }, function (err, letter) {
+    // this works
+})
+
+service2.invoke({ get: 'random number' }, function (err, number) {
+    // so does this
+})
+```
 
 
 ## testing
