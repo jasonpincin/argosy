@@ -8,9 +8,10 @@ var cq        = require('concurrent-queue'),
     Promise   = require('promise-polyfill'),
     pattern   = require('argosy-pattern')
 
-module.exports = function argosy () {
-    var myid        = uuid(),
-        requestId   = 0,
+module.exports = function argosy (options) {
+    options = assign({ id: uuid() }, options)
+
+    var requestSeq  = 0,
         implemented = [],
         outstanding = [],
         input       = split(),
@@ -28,7 +29,7 @@ module.exports = function argosy () {
                 break
             case 'response':
                 outstanding.filter(function (pending) {
-                    return (msg.headers.client.id === myid && pending.seq === msg.headers.client.seq)
+                    return (msg.headers.client.id === options.id && pending.seq === msg.headers.client.seq)
                 }).forEach(function (pending) {
                     if (msg.error) pending.reject(assign(new Error(msg.error.message), { remoteStack: msg.error.stack }))
                     else pending.resolve(msg.body)
@@ -38,7 +39,7 @@ module.exports = function argosy () {
         cb()
     })
 
-    var stream = assign(pipeline(input, parse, processMessage, output), { id: myid })
+    var stream = assign(pipeline(input, parse, processMessage, output), { id: options.id })
 
     stream.accept = function accept (rules) {
         var impl = { pattern: pattern(rules), queue: cq() }
@@ -47,7 +48,7 @@ module.exports = function argosy () {
         return impl.queue
     }
     stream.invoke = function invoke (msgBody, cb) {
-        var request = { type: 'request', headers: { client: { id: myid, seq: requestId++ } }, body: msgBody },
+        var request = { type: 'request', headers: { client: { id: options.id, seq: requestSeq++ } }, body: msgBody },
             cb      = cb || function () {}
 
         var done
@@ -80,7 +81,7 @@ module.exports = function argosy () {
     // default message pattern implementations
     stream.accept({argosy:'info'}).process(function onInfoRequest (msgBody, cb) {
         cb(null, {
-            id: myid,
+            id: options.id,
             implemented: implemented.map(function implPatterns (impl) {
                 return impl.pattern.encode()
             })
