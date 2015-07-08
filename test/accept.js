@@ -37,3 +37,22 @@ test('accept(nested pattern)', function (t) {
     service.write(JSON.stringify({ type: 'request', headers: {client: {id:1, request:10}}, body: { nested: {accept: 42} } })+'\n')
     service.write(JSON.stringify(msg)+'\n')
 })
+
+test('accept anything', function (t) {
+    t.plan(2)
+
+    var service = argosy()
+
+    var helloWorld = service.accept({})
+
+    service.write(JSON.stringify({ type: 'request', headers: {client: {id:1, request:10}}, body: { hello: 'world' } })+'\n')
+    service.write(JSON.stringify({ type: 'request', headers: {client: {id:1, request:11}}, body: { greetings: 'world' } })+'\n')
+    service.on('data', function (chunk) {
+        var msg = JSON.parse(chunk)
+        if (msg.type !== 'response') return
+        t.equal(msg.body.hello, 'WORLD', 'should get expected response regardless of message sent')
+    })
+    helloWorld.process(function (_msg, cb) {
+        cb(null, { hello: 'WORLD' })
+    })
+})
