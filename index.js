@@ -68,6 +68,10 @@ module.exports = function argosy () {
     }
     stream.invoke.partial = function invokePartial (partialBody) {
         return function partialInvoke (msgBody, cb) {
+            if (typeof msgBody === 'function') {
+                cb = msgBody
+                msgBody = {}
+            }
             return stream.invoke(assign({}, partialBody, msgBody), cb)
         }
     }
