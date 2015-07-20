@@ -1,5 +1,7 @@
 # argosy
 
+[![Join the chat at https://gitter.im/jasonpincin/argosy](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/jasonpincin/argosy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![NPM version](https://badge.fury.io/js/argosy.png)](http://badge.fury.io/js/argosy)
 [![Build Status](https://travis-ci.org/jasonpincin/argosy.svg?branch=master)](https://travis-ci.org/jasonpincin/argosy)
 [![Coverage Status](https://coveralls.io/repos/jasonpincin/argosy/badge.png?branch=master)](https://coveralls.io/r/jasonpincin/argosy?branch=master)
