@@ -1,5 +1,7 @@
 # argosy
 
+![argosy logo](http://argosy.io/assets/images/argosy-logo-final-smaller.png)
+
 [![NPM version](https://badge.fury.io/js/argosy.png)](http://badge.fury.io/js/argosy)
 [![Build Status](https://travis-ci.org/jasonpincin/argosy.svg?branch=master)](https://travis-ci.org/jasonpincin/argosy)
 [![Coverage Status](https://coveralls.io/repos/jasonpincin/argosy/badge.png?branch=master)](https://coveralls.io/r/jasonpincin/argosy?branch=master)
@@ -132,7 +134,7 @@ var argosy = require('argosy')()
 
 Create a [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) that will be pushed messages that match the `pattern` object provided (see [argosy-pattern](https://github.com/jasonpincin/argosy-pattern) for details on defining patterns). These messages should be processed and responded to using the `process` function of the `queue`.  Responses will be sent to the requesting Argosy endpoint.
 
-It is advised not to match the key `argosy` as this is reserved for internal use. 
+It is advised not to match the key `argosy` as this is reserved for internal use.
 
 ### queue.process([opts,] func)
 
@@ -140,7 +142,7 @@ Process messages. See [concurrent-queue](https://github.com/jasonpincin/concurre
 
 ### argosy.invoke(msg [, cb])
 
-Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one oft he patterns implemtned by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be taken care of locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response. 
+Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one oft he patterns implemtned by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be taken care of locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response.
 
 ### func = argosy.invoke.partial(partialMsg)
 
@@ -154,7 +156,7 @@ Create an Argosy pattern, given an object containing rules. Each key in the obje
 
 ### pattern.matches(object)
 
-Returns true of the given object matches the pattern, or false otherwise. 
+Returns true of the given object matches the pattern, or false otherwise.
 
 ### argosy.pattern.match
 
@@ -206,12 +208,12 @@ service2.invoke({ get: 'random number' }, function (err, number) {
 
 `npm test [--dot | --spec] [--grep=pattern]`
 
-Specifying `--dot` or `--spec` will change the output from the default TAP style. 
+Specifying `--dot` or `--spec` will change the output from the default TAP style.
 Specifying `--grep` will only run the test files that match the given pattern.
 
 ## coverage
 
 `npm run coverage [--html]`
 
-This will output a textual coverage report. Including `--html` will also open 
+This will output a textual coverage report. Including `--html` will also open
 an HTML coverage report in the default browser.
