@@ -1,5 +1,3 @@
-# argosy
-
 ![argosy logo](http://argosy.io/assets/images/argosy-logo-final-smaller.png)
 
 [![NPM version](https://badge.fury.io/js/argosy.png)](http://badge.fury.io/js/argosy)
