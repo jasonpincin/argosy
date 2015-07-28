@@ -1,5 +1,4 @@
-var http    = require('http'),
-    query   = require('querystring').stringify,
+var query   = require('querystring').stringify,
     request = require('request-promise'),
     co      = require('co'),
     argosy  = require('..')()
@@ -12,7 +11,7 @@ var weatherRequest = argosy.accept({
 
 // process the requests for weather
 var weatherUrl = 'http://api.openweathermap.org/data/2.5/weather?'
-weatherRequest.process(co.wrap(function* ({ location: q, units = 'imperial' }) {
+weatherRequest.process(co.wrap(function * ({ location: q, units = 'imperial' }) {
     var weather = yield request.get(weatherUrl + query({ q, units }))
     return JSON.parse(weather).main
 }))
@@ -20,7 +19,7 @@ weatherRequest.process(co.wrap(function* ({ location: q, units = 'imperial' }) {
 // we can create a convenience function with invoke.partial
 var getWeather = argosy.invoke.partial({ get: 'weather', units: 'metric' })
 
-co(function* () {
+co(function * () {
     // use invoke directly
     var boston = yield argosy.invoke({ get: 'weather', location: 'Boston,MA' })
 

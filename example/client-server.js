@@ -30,6 +30,7 @@ weatherRequest.process(function (msg, cb) {
 
 // use the service with argosy-client
 client.invoke({ get: 'weather', location: 'Boston,MA' }, function (err, weather) {
+    if (err) return console.error(err)
     console.log(weather.temp + ' degrees (F) in Boston.')
 })
 
@@ -37,6 +38,7 @@ client.invoke({ get: 'weather', location: 'Boston,MA' }, function (err, weather)
 var getWeather = client.invoke.partial({ get: 'weather', units: 'metric' })
 
 getWeather({ location: 'Dublin,IE' }, function (err, weather) {
+    if (err) return console.error(err)
     console.log(weather.temp + ' degrees (C) in Dublin.')
 })
 
