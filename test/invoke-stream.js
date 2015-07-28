@@ -4,7 +4,7 @@ var test   = require('tape'),
 
 var service = argosy()
 service.accept({ get: 'random-number', min: match.number, max: match.number }).process(function (msg, cb) {
-    cb(null, parseInt(msg.min + (Math.random(msg.max - msg.min) * (msg.max - msg.min + 1) )))
+    cb(null, parseInt(msg.min + (Math.random(msg.max - msg.min) * (msg.max - msg.min + 1))))
 })
 service.accept({ make: 'error' }).process(function (msg, cb) {
     cb(new Error('It broke'))

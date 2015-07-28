@@ -28,11 +28,11 @@ test('invoke square over net with sub-invocations', function (t) {
     t.plan(1)
     t.timeoutAfter(2000)
 
-    var client = argosy()
+    var myclient = argosy()
     var socket = net.createConnection(server.address(), function () {
-        client.pipe(socket).pipe(client)
+        myclient.pipe(socket).pipe(myclient)
 
-        client.invoke({ square: 4 }).then(function (result) {
+        myclient.invoke({ square: 4 }).then(function (result) {
             t.equals(result, 16, 'tells us square of 4 is 16')
             setTimeout(socket.end.bind(socket), 200)
         }).catch(t.error.bind(t))

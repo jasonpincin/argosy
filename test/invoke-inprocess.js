@@ -3,7 +3,7 @@ var test   = require('tape'),
     match  = require('argosy-pattern/match')
 
 argosy.accept({ get: 'random-number', min: match.number, max: match.number }).process(function (msg, cb) {
-    cb(null, parseInt(msg.min + (Math.random(msg.max - msg.min) * (msg.max - msg.min + 1) )))
+    cb(null, parseInt(msg.min + (Math.random(msg.max - msg.min) * (msg.max - msg.min + 1))))
 })
 argosy.accept({ make: 'error' }).process(function (msg, cb) {
     cb(new Error('It broke'))

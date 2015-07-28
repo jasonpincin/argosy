@@ -1,5 +1,4 @@
-var test     = require('tape'),
-    exported = require('..')
+var test     = require('tape')
 
 test('exported', function (t) {
     t.equal(typeof require('..'), 'function', 'exports a function')

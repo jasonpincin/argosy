@@ -1,7 +1,6 @@
 var net    = require('net'),
     test   = require('tape'),
-    argosy = require('..'),
-    match  = require('argosy-pattern/match')
+    argosy = require('..')
 
 var service = argosy()
 var client = argosy()
@@ -26,11 +25,11 @@ test('remote socket service generating errors error', function (t) {
     t.plan(2)
     t.timeoutAfter(2000)
 
-    var client = argosy()
+    var myclient = argosy()
     var socket = net.createConnection(server.address(), function () {
-        client.pipe(socket).pipe(client)
+        myclient.pipe(socket).pipe(myclient)
 
-        client.invoke({ make: 'error' }).catch(function (err) {
+        myclient.invoke({ make: 'error' }).catch(function (err) {
             t.ok(err.message && err.stack, 'should result in error for invoke')
             t.ok(err.remoteStack, 'should include remoteStack')
             setTimeout(socket.end.bind(socket), 200)
@@ -42,11 +41,11 @@ test('remote socket service (nested) generating errors error', function (t) {
     t.plan(2)
     t.timeoutAfter(2000)
 
-    var client = argosy()
+    var myclient = argosy()
     var socket = net.createConnection(server.address(), function () {
-        client.pipe(socket).pipe(client)
+        myclient.pipe(socket).pipe(myclient)
 
-        client.invoke({ make: 'nestedError' }).catch(function (err) {
+        myclient.invoke({ make: 'nestedError' }).catch(function (err) {
             t.ok(err.message && err.stack, 'should result in error for invoke')
             t.ok(err.remoteStack, 'should include remoteStack')
             setTimeout(socket.end.bind(socket), 200)
