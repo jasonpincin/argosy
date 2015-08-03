@@ -1,17 +1,18 @@
-var assert          = require('assert'),
-    cq              = require('concurrent-queue'),
-    eventuate       = require('eventuate'),
-    eventuateFilter = require('eventuate-filter'),
-    assign          = require('object-assign'),
-    through2        = require('through2'),
-    objectify       = require('through2-objectify'),
-    pipeline        = require('stream-combiner2'),
-    split           = require('split2'),
-    uuid            = require('uuid').v4,
-    Promise         = require('promise-polyfill'),
-    pattern         = require('argosy-pattern'),
-    find            = require('array-find'),
-    after           = require('afterward')
+var assert    = require('assert'),
+    cq        = require('concurrent-queue'),
+    eventuate = require('eventuate'),
+    filter    = require('eventuate-filter'),
+    once      = require('eventuate-once'),
+    assign    = require('object-assign'),
+    through2  = require('through2'),
+    objectify = require('through2-objectify'),
+    pipeline  = require('stream-combiner2'),
+    split     = require('split2'),
+    uuid      = require('uuid').v4,
+    Promise   = require('promise-polyfill'),
+    pattern   = require('argosy-pattern'),
+    find      = require('array-find'),
+    after     = require('afterward')
 
 module.exports = function argosy (options) {
     options = assign({ id: uuid() }, options)
@@ -99,12 +100,12 @@ module.exports = function argosy (options) {
     stream.subscribeRemote = function subscribeRemote (msgBody, cb) {
         assert(Array.isArray(msgBody), 'subscribeRemote requires an array of subscriptions')
         output.write({ type: 'subscribe', body: msgBody })
-        return after(stream.synced(), cb)
+        return after(once(stream.synced), cb)
     }
     stream.synced = eventuate()
     stream.serviceAdded = eventuate()
-    stream.remoteServiceAdded = eventuateFilter(stream.serviceAdded, function (svc) { return svc.remote })
-    stream.localServiceAdded = eventuateFilter(stream.serviceAdded, function (svc) { return svc.local })
+    stream.remoteServiceAdded = filter(stream.serviceAdded, function (svc) { return svc.remote })
+    stream.localServiceAdded = filter(stream.serviceAdded, function (svc) { return svc.local })
     stream.pattern = pattern
 
     Object.defineProperties(stream, {
