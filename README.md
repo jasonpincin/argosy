@@ -6,7 +6,7 @@
 [![Build Status](https://travis-ci.org/jasonpincin/argosy.svg?branch=master)](https://travis-ci.org/jasonpincin/argosy)
 [![Coverage Status](https://coveralls.io/repos/jasonpincin/argosy/badge.png?branch=master)](https://coveralls.io/r/jasonpincin/argosy?branch=master)
 
-A modular, pipable, micro-service framework.
+A modular, pipe-able, micro-service framework.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -121,7 +121,7 @@ co(function* () {
 })
 ```
 
-_Note: If you're runtime doesn't offer generators or promises, you can still run the above example from the example directory via [babel](https://babeljs.io). Just do: `npm i -g babel && babel-node example/es6.js`_
+_Note: If your runtime doesn't offer generators or promises, you can still run the above example from the example directory via [babel](https://babeljs.io). Just do: `npm i -g babel && babel-node example/es6.js`_
 
 ## api
 
@@ -138,11 +138,11 @@ It is advised not to match the key `argosy` as this is reserved for internal use
 
 ### queue.process([opts,] func)
 
-Process messages. See [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) for more information. The processor function `func` has a signature of `msg [, cb]`. The callback `cb` if provided should be executed with any applicable return value or error object (as 1st argument) for the invoking client, once the request has been completed. Alternatively, a promise may be returned from the processor function `func`, and it's resolved value or rejected error will be returned to the invoking client.
+Process messages. See [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) for more information. The processor function `func` has a signature of `msg [, cb]`. The callback `cb` if provided should be executed with any applicable return value or error object (as 1st argument) for the invoking client, once the request has been completed. Alternatively, a promise may be returned from the processor function `func`, and its resolved value or rejected error will be returned to the invoking client.
 
 ### argosy.invoke(msg [, cb])
 
-Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one oft he patterns implemtned by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be taken care of locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response.
+Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one of the patterns implemented by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be handled locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response.
 
 ### func = argosy.invoke.partial(partialMsg)
 
@@ -183,7 +183,7 @@ var argosy   = require('argosy'),
 service1.pipe(service2).pipe(service)
 ```
 
-This will create a duplex connection between the two Argosy endpoints, and allow both to invoke implemented servcies via the other. For example:
+This will create a duplex connection between the two Argosy endpoints, and allow both to invoke implemented services via the other. For example:
 
 ```javascript
 service1.accept({ get: 'random number' }).process(function (msg, cb) {
