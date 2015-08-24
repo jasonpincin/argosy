@@ -23,7 +23,7 @@ test('invoke', function (t) {
 
     client.invoke({ make: 'error' }, function (err) {
         t.true(err, 'on error supplies cb error')
-        t.ok(err.remoteStack, 'error object has a remote stack')
+        t.ok(err.hasOwnProperty('remoteStack'), 'error object has a remote stack')
     })
 
     client.invoke({ get: 'random-number', min: 1, max: 10 }).then(function (result) {
