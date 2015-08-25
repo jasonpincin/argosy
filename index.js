@@ -52,7 +52,7 @@ module.exports = function argosy (options) {
                 }
                 output.write({ type: 'synced', body: syncMessage })
                 break
-            case 'service-announce':
+            case 'announce-service':
                 remoteServices.push({ provider: msg.body.provider, pattern: pattern.decode(msg.body.pattern) })
                 stream.serviceAdded.produce({ remote: true, provider: msg.body.provider, pattern: pattern.decode(msg.body.pattern) })
                 break
@@ -135,7 +135,7 @@ module.exports = function argosy (options) {
     }
 
     function announceService (svc) {
-        output.write({ type: 'service-announce', body: { provider: { id: options.id }, pattern: svc.pattern.encode() } })
+        output.write({ type: 'announce-service', body: { provider: { id: options.id }, pattern: svc.pattern.encode() } })
     }
 
     return stream
