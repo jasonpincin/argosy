@@ -3,6 +3,7 @@
 [![NPM version](https://badge.fury.io/js/argosy.png)](http://badge.fury.io/js/argosy)
 [![Build Status](https://travis-ci.org/jasonpincin/argosy.svg?branch=master)](https://travis-ci.org/jasonpincin/argosy)
 [![Coverage Status](https://coveralls.io/repos/jasonpincin/argosy/badge.png?branch=master)](https://coveralls.io/r/jasonpincin/argosy?branch=master)
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/jp-argosy.svg)](https://saucelabs.com/u/jp-argosy)
 
 A modular, pipe-able, micro-service framework.
 
@@ -204,14 +205,21 @@ service2.invoke({ get: 'random number' }, function (err, number) {
 
 ## testing
 
-`npm test [--dot | --spec] [--grep=pattern]`
+`npm test [--dot | --spec] [--phantom] [--grep=pattern]`
 
-Specifying `--dot` or `--spec` will change the output from the default TAP style.
+Specifying `--dot` or `--spec` will change the output from the default TAP style. 
+Specifying `--phantom` will cause the tests to run in the headless phantom browser instead of node.
 Specifying `--grep` will only run the test files that match the given pattern.
 
-## coverage
+### browser test
+
+`npm run browser-test`
+
+This will run the tests in all browsers (specified in .zuul.yml). Be sure to [educate zuul](https://github.com/defunctzombie/zuul/wiki/cloud-testing#2-educate-zuul) first.
+
+### coverage
 
 `npm run coverage [--html]`
 
-This will output a textual coverage report. Including `--html` will also open
+This will output a textual coverage report. Including `--html` will also open 
 an HTML coverage report in the default browser.

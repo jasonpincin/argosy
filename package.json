@@ -3,10 +3,6 @@
   "version": "2.1.0",
   "description": "A modular, pipable, micro-service framework",
   "main": "index.js",
-  "scripts": {
-    "test": "make npm-test",
-    "coverage": "make npm-coverage"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/jasonpincin/argosy.git"
@@ -34,29 +30,36 @@
   },
   "contributors": [],
   "devDependencies": {
-    "@jasonpincin/standard": "~5.0.0-6",
+    "@jasonpincin/standard": "~5.0.0-7",
     "co": "~4.6.0",
-    "istanbul": "~0.3.17",
+    "istanbul": "~0.3.18",
     "opn": "~1.0.1",
+    "phantomjs": "~1.9.18",
     "request-promise": "~0.4.2",
     "tap-dot": "~1.0.0",
-    "tap-spec": "~4.0.2",
-    "tape": "~4.0.2"
+    "tap-spec": "~4.1.0",
+    "tape": "~4.2.0",
+    "zuul": "~3.3.0"
   },
   "dependencies": {
-    "afterward": "~1.0.0",
+    "afterward": "~1.0.2",
     "argosy-pattern": "~2.0.0",
     "array-find": "~1.0.0",
-    "concurrent-queue": "~4.0.0",
-    "eventuate": "~3.0.0",
-    "eventuate-filter": "~2.0.0",
-    "eventuate-once": "~1.0.1",
-    "object-assign": "~3.0.0",
+    "concurrent-queue": "~7.0.0",
+    "eventuate": "~4.0.0",
+    "eventuate-filter": "~3.0.0",
+    "eventuate-once": "~1.1.0",
+    "object-assign": "~4.0.1",
     "promise-polyfill": "~2.1.0",
     "split2": "~1.0.0",
     "stream-combiner2": "~1.0.2",
     "through2": "~2.0.0",
     "through2-objectify": "~0.1.1",
     "uuid": "~2.0.1"
+  },
+  "scripts": {
+    "test": "make npm-test",
+    "coverage": "make npm-coverage",
+    "browser-test": "make browser-test"
   }
 }
