@@ -141,11 +141,11 @@ Process messages. See [concurrent-queue](https://github.com/jasonpincin/concurre
 
 ### argosy.invoke(msg [, cb])
 
-Invoke a service which implements the `msg` [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one of the patterns implemented by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be handled locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response.
+Invoke a service which implements the `msg` object [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one of the patterns implemented by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be handled locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response.
 
 ### func = argosy.invoke.partial(partialMsg)
 
-Return a function that represents a partial invocation. The function returned has the same signature as `argosy.invoke`, but when called, the `msg` parameter will be merged with the `partialMsg` parameter provided at the time the function was created.  Otherwise, the generated function behaves identically to `argosy.invoke`.
+Return a function that represents a partial invocation. The function returned has the same signature as `argosy.invoke`, but when called, the `msg` object parameter will be merged with the `partialMsg` object parameter provided at the time the function was created.  Otherwise, the generated function behaves identically to `argosy.invoke`.
 
 ### argosy.subscribeRemote(subscriptions [, cb])
 
