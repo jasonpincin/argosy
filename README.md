@@ -147,6 +147,16 @@ Invoke a service which implements the `msg` [pattern](https://github.com/jasonpi
 
 Return a function that represents a partial invocation. The function returned has the same signature as `argosy.invoke`, but when called, the `msg` parameter will be merged with the `partialMsg` parameter provided at the time the function was created.  Otherwise, the generated function behaves identically to `argosy.invoke`.
 
+### argosy.subscribeRemote(subscriptions [, cb])
+
+Accepts an array of strings, these strings are subscription topics. Valid subscription topics are:
+
+* `services` - Be notified when the remote argosy endpoint adds a service.  All existing remote services will be sent immediately.
+
+Also accepts an optional error-first callback, which will be invoked after the remote argosy endpoint has sent all existing services.
+
+This function returns a promise.
+
 ### pattern = argosy.pattern(object)
 
 See also [argosy-pattern](https://github.com/jasonpincin/argosy-pattern).
@@ -207,7 +217,7 @@ service2.invoke({ get: 'random number' }, function (err, number) {
 
 `npm test [--dot | --spec] [--phantom] [--grep=pattern]`
 
-Specifying `--dot` or `--spec` will change the output from the default TAP style. 
+Specifying `--dot` or `--spec` will change the output from the default TAP style.
 Specifying `--phantom` will cause the tests to run in the headless phantom browser instead of node.
 Specifying `--grep` will only run the test files that match the given pattern.
 
@@ -221,5 +231,5 @@ This will run the tests in all browsers (specified in .zuul.yml). Be sure to [ed
 
 `npm run coverage [--html]`
 
-This will output a textual coverage report. Including `--html` will also open 
+This will output a textual coverage report. Including `--html` will also open
 an HTML coverage report in the default browser.
