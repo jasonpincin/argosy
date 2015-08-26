@@ -157,6 +157,65 @@ Also accepts an optional error-first callback, which will be invoked after the r
 
 This function returns a promise.
 
+### events
+
+Argosy exposes the following [eventuates](https://github.com/jasonpincin/eventuate):
+
+#### serviceAdded
+
+Produces messages when any service is added to the `argosy` endpoint (local or remote). The structure of the message is:
+
+```
+{ 
+    remote: true|false, 
+    provider: { 
+        id: uuid 
+    }, 
+    pattern: argosyPattern 
+}
+```
+
+Where `argosyPattern` is an [argosy.pattern](#pattern--argosypatternobject)
+
+#### localServiceAdded
+
+Produces messages when a local service is added to the `argosy` endpoint. The structure of the message is:
+
+```
+    remote: false, 
+    provider: { 
+        id: uuid 
+    }, 
+    pattern: argosyPattern 
+```
+
+Where `argosyPattern` is an [argosy.pattern](#pattern--argosypatternobject)
+
+#### remoteServiceAdded
+
+Produces messages when a remote service is added to the `argosy` endpoint. The structure of the message is:
+
+```
+    remote: true, 
+    provider: { 
+        id: uuid 
+    }, 
+    pattern: argosyPattern 
+```
+
+#### synced
+
+Produces messages when a remote service has advertised all subscribed resources to the local `argosy` endpoint.
+
+```
+    provider: { 
+        id: uuid 
+    },
+    services: count
+```
+
+Where `services` is present only if the remote subscription includes "services".
+
 ### pattern = argosy.pattern(object)
 
 See also [argosy-pattern](https://github.com/jasonpincin/argosy-pattern).
