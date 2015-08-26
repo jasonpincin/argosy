@@ -20,12 +20,19 @@ A modular, pipe-able, micro-service framework.
   - [queue.process([opts,] func)](#queueprocessopts-func)
   - [argosy.invoke(msg [, cb])](#argosyinvokemsg--cb)
   - [func = argosy.invoke.partial(partialMsg)](#func--argosyinvokepartialpartialmsg)
+  - [argosy.subscribeRemote(subscriptions [, cb])](#argosysubscriberemotesubscriptions--cb)
+  - [events](#events)
+    - [serviceAdded](#serviceadded)
+    - [localServiceAdded](#localserviceadded)
+    - [remoteServiceAdded](#remoteserviceadded)
+    - [synced](#synced)
   - [pattern = argosy.pattern(object)](#pattern--argosypatternobject)
   - [pattern.matches(object)](#patternmatchesobject)
   - [argosy.pattern.match](#argosypatternmatch)
   - [connecting endpoints](#connecting-endpoints)
 - [testing](#testing)
-- [coverage](#coverage)
+  - [browser test](#browser-test)
+  - [coverage](#coverage)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
