@@ -43,7 +43,7 @@ module.exports = function argosy (options) {
                 })
                 break
             case 'subscribe':
-                var syncMessage = { id: options.id }
+                var syncMessage = { provider: { id: options.id } }
                 if (~msg.body.indexOf('services')) {
                     stream.localServiceAdded.removeConsumer(announceService)
                     stream.localServiceAdded(announceService)
