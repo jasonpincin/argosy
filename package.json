@@ -30,7 +30,7 @@
   },
   "contributors": [],
   "devDependencies": {
-    "@jasonpincin/standard": "~5.0.0-7",
+    "@jasonpincin/standard": "~5.0.0-8",
     "co": "~4.6.0",
     "istanbul": "~0.3.18",
     "opn": "~1.0.1",
