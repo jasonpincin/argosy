@@ -43,7 +43,7 @@
   },
   "dependencies": {
     "afterward": "~1.0.2",
-    "argosy-pattern": "~2.0.0",
+    "argosy-pattern": "~2.1.0",
     "array-find": "~1.0.0",
     "concurrent-queue": "~7.0.0",
     "eventuate": "~4.0.0",
