@@ -5,7 +5,7 @@ var query   = require('querystring').stringify,
 
 // create a service queue of requests for weather
 var weatherRequest = argosy.accept({
-    get: 'weather',
+    get     : 'weather',
     location: argosy.pattern.match.defined
 })
 

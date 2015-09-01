@@ -11,7 +11,7 @@ client.pipe(service).pipe(client)
 
 // create a service queue of requests for weather
 var weatherRequest = service.accept({
-    get: 'weather',
+    get     : 'weather',
     location: argosy.pattern.match.defined
 })
 
