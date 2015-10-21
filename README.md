@@ -132,13 +132,13 @@ _Note: If your runtime doesn't offer generators or promises, you can still run t
 ## api
 
 ```javascript
-// Create a new Argosy endpoint/stream
+// Create a new Argosy stream
 var argosy = require('argosy')()
 ```
 
 ### queue = argosy.accept(pattern)
 
-Create a [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) that will be pushed messages that match the `pattern` object provided (see [argosy-pattern](https://github.com/jasonpincin/argosy-pattern) for details on defining patterns). These messages should be processed and responded to using the `process` function of the `queue`.  Responses will be sent to the requesting Argosy endpoint.
+Create a [concurrent-queue](https://github.com/jasonpincin/concurrent-queue) that will be pushed messages that match the `pattern` object provided (see [argosy-pattern](https://github.com/jasonpincin/argosy-pattern) for details on defining patterns). These messages should be processed and responded to using the `process` function of the `queue`.  Responses will be sent to the requesting Argosy stream.
 
 It is advised not to match the key `argosy` as this is reserved for internal use.
 
@@ -148,7 +148,7 @@ Process messages. See [concurrent-queue](https://github.com/jasonpincin/concurre
 
 ### argosy.invoke(msg [, cb])
 
-Invoke a service which implements the `msg` object [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one of the patterns implemented by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be handled locally by the the Argosy endpoint `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response.
+Invoke a service which implements the `msg` object [pattern](https://github.com/jasonpincin/argosy-pattern#argosy-pattern). Upon completion, the callback `cb`, if supplied, will be called with the result or error. The `argosy.invoke` function also returns a promise which will resolve or reject appropriately. If the `msg` matches one of the patterns implemented by the `argosy` endpoint performing the `invoke`, then the `invoke` request will be handled locally by the the Argosy stream `invoke` was called from, otherwise the `invoke` request will be written to the stream's output, and the stream's input will be monitored for a response.
 
 ### func = argosy.invoke.partial(partialMsg)
 
@@ -248,7 +248,7 @@ Argosy patterns support more than literal values. The values of the pattern keys
 
 ### connecting endpoints
 
-One Argosy endpoint may be connected to another via pipes.
+One Argosy stream may be connected to another by piping them together.
 
 ```
 var argosy   = require('argosy'),
@@ -258,7 +258,7 @@ var argosy   = require('argosy'),
 service1.pipe(service2).pipe(service)
 ```
 
-This will create a duplex connection between the two Argosy endpoints, and allow both to invoke implemented services via the other. For example:
+This will create a duplex connection between the two Argosy streams, and allow both to invoke implemented services via the other. For example:
 
 ```javascript
 service1.accept({ get: 'random number' }).process(function (msg, cb) {
@@ -278,6 +278,8 @@ service2.invoke({ get: 'random number' }, function (err, number) {
 })
 ```
 
+Argosy streams work in pairs. To connect more than two Argosy streams, take a
+look at [Hansa](https://github.com/jasonpincin/hansa).
 
 ## testing
 
